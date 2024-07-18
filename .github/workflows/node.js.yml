@@ -28,7 +28,7 @@ jobs:
         cache: 'npm'
     - name: Create .env file
       run: |
-        echo "MONGODB_AUTH_URI=${{ secrets.MONGODB_PRODUCT_URI }}" >> auth/.env
+        echo "MONGODB_AUTH_URI=${{ secrets.MONGODB_AUTH_URI }}" >> auth/.env
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> auth/.env
     - name: Install dependencies
       run: |
