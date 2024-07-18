@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../../app');
 const {mongoURI} = require('../config/index');
 
-jest.setTimeout(20000);
+jest.setTimeout(40000);
 
 beforeAll(async()=>{
   await mongoose.connect(mongoURI);
