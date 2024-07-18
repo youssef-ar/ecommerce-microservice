@@ -34,12 +34,6 @@ jobs:
       run: |
         cd auth
         npm ci
-        cd ..
-        cd product
-        npm ci
-        cd ..
-        cd order
-        npm ci
     - name: Run tests for auth
       run : |
         cd auth
