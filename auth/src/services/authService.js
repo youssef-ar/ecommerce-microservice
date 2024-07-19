@@ -30,6 +30,10 @@ const authService = {
         const token = jwt.sign({...user},jwtSecret);
         return {success:true, data:{token}};
         
+    },
+
+    async deleteTestingData(){
+        const result = await User.deleteMany({ email: /^test/ });
     }
 }
 

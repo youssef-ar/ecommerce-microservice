@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
+const authService = require('../services/authService');
 
 const app = require('../../app');
-const {mongoURI} = require('../config/index');
+require("dotenv").config();
 
 jest.setTimeout(40000);
 
 beforeAll(async()=>{
-  await mongoose.connect(mongoURI);
+  await mongoose.connect(process.env.MONGODB_AUTH_URI);
 });
 
 afterAll(async () => {
+  await authService.deleteTestingData();
   await mongoose.disconnect();
 });
 
