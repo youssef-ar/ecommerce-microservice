@@ -19,7 +19,7 @@ afterAll(async () => {
 describe("POST / signup" ,()=>{
 
   it("should signup a new user", async()=>{
-    const res = await request(app).post('/signup').send({ email: 'test@example.com', password: 'password123' });
+    const res = await request(app).post('/signup').send({ email: 'test@example.com', password: 'A1b2@c3D' });
     expect(res.statusCode).toBe(200);
     expect(res.body).toStrictEqual({success:true, message: "User registered successfully"});
   })
@@ -31,7 +31,7 @@ describe("POST / signup" ,()=>{
   })
 
   it("should not signup a user with an email address that already exists in the system", async()=>{
-    const res = await request(app).post('/signup').send({ email: 'test@example.com', password: 'password123' });
+    const res = await request(app).post('/signup').send({ email: 'test@example.com', password: 'A1b2@c3D' });
     expect(res.statusCode).toBe(409);
     expect(res.body).toStrictEqual({success:false, message: "email address already exists in the system"});
   })
@@ -41,7 +41,7 @@ describe("POST / signup" ,()=>{
 describe("POST /login", ()=>{
 
   it("should login a registered user", async()=>{
-    const res = await request(app).post('/login').send({ email: 'test@example.com', password: 'password123' });
+    const res = await request(app).post('/login').send({ email: 'test@example.com', password: 'A1b2@c3D' });
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.data.token).not.toBeNull();
@@ -55,7 +55,7 @@ describe("POST /login", ()=>{
   })
 
   it("should not login with incorrect credentials", async()=>{
-    const res = await request(app).post('/login').send({ email: 'worngtest@example.com', password: 'password' });
+    const res = await request(app).post('/login').send({ email: 'wrongtest@example.com', password: 'A1b2@c3D' });
     expect(res.statusCode).toBe(401);
     expect(res.body).toStrictEqual({success:false, message: "Invalid email or password"});
   })
