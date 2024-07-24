@@ -23,9 +23,29 @@ const productService={
         return({success:true, data:{products}});
     },
     async postProduct(productInfo){
-        const prod = new Product(productInfo);
-        await prod.save();
 
+        const prod = new product(productInfo);
+        
+        await prod.save();
+        return {success:true, message:'Product added successfully'};
+
+    },
+
+    async patchProduct(id,update){
+        const newProduct = await product.findByIdAndUpdate(id,update,{new:true});
+        if(!newProduct){
+            return {success:false, message:'Product not found'};
+        }
+        return {success:true, data:{product:newProduct}};
+
+    },
+
+    async deleteProduct(id){
+        const deletedProduct = await product.findByIdAndDelete(id);
+        if(!deletedProduct){
+            return {success:false, message:'Product not found'};
+        }
+        return {success:true, message:'Product deleted successfully'};
     }
 }
 
