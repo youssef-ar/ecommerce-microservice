@@ -18,6 +18,15 @@ jobs:
       matrix:
         node-version: [16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    services:
+      auth:
+        image: node:16
+        ports:
+          - 8000:8000
+        options: --entrypoint "npm start" 
+        env:
+          MONGODB_AUTH_URI: ${{ secrets.MONGODB_AUTH_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     steps:
     - uses: actions/checkout@v4
