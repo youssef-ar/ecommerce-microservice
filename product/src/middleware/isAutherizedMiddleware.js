@@ -10,7 +10,7 @@ const isAutherizedMiddleware= (req,res,next)=>{
     try {
         
         const decodedToken = jwt.verify(token, jwtSecret);
-        if(decodedToken.email!=="test@example.com"){
+        if(decodedToken.email!=="admin@ecommerce.com"){
           return res.status(401).json({ message: "Unauthorized" });
         }
         req.user = decodedToken;

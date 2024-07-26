@@ -9,10 +9,10 @@ jest.setTimeout(40000);
 
 let authToken;
 beforeAll(async()=>{
-  await mongoose.connect(process.env.MONGODB_AUTH_URI);
+  await mongoose.connect(process.env.MONGODB_PRODUCT_URI);
   const authRes = await request('http://localhost:8000/auth')
   .post('/login')
-  .send({ email: 'test@example.com', password: 'A1b2@c3D' });
+  .send({ email: 'admin@ecommerce.com', password: 'A1b2@c3D' });
   authToken = authRes.body.data.token;
   
 });

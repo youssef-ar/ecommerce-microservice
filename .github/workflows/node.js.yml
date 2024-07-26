@@ -21,20 +21,41 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node-version }} for auth
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Create .env file
+    - name: Create .env file for auth
       run: |
         echo "MONGODB_AUTH_URI=${{ secrets.MONGODB_AUTH_URI }}" >> auth/.env
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> auth/.env
-    - name: Install dependencies
+    - name: Install dependencies for auth
       run: |
         cd auth
         npm ci
     - name: Run tests for auth
       run : |
         cd auth
+        npm run test
+
+    - name: Use Node.js ${{ matrix.node-version }} for product
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Create .env file for product
+      run: |
+        echo "MONGODB_PRODUCT_URI=${{ secrets.MONGODB_PRODUCT_URI }}" >> product/.env
+        echo "PRODUCT_API_KEY=${{ secrets.PRODUCT_API_KEY }}" >> product/.env
+        
+    - name: Install dependencies for product
+      run: |
+        cd product
+        npm ci
+        
+    - name: Run tests for product
+      run: |
+        cd product
         npm run test
