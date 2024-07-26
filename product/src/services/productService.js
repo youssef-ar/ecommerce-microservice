@@ -17,11 +17,11 @@ const productService={
             }
         }
         //pagination
-        const page = Number(query.page) || 1;
-        const limit = Number(query.limit) || 15;
-        const totalProducts = await product.countDocuments();
+        const page = Number(query.page || 1);
+        const limit = Number(query.limit || 15);
+        const totalProducts = await product.countDocuments(params);
         const totalPages =  Math.ceil(totalProducts / limit);
-        if(page>totalPages){
+        if((page>totalPages) || (page<totalPages)){
             return({success:false, message:"Out-of-Range Page Request",pagination:{
                 total_records:totalProducts,
                 total_pages:totalPages

@@ -70,12 +70,12 @@ describe("GET / products" ,()=>{
   afterAll(async()=>{
     await product.findByIdAndDelete(productid);
   })
-  //add pagination
-  it("should return all products", async()=>{
+  it("should return the first 15 products", async()=>{
     const res = await request(app).get('');
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toStrictEqual(true);
     expect(res.body.data.products).not.toBeNull();
+    expect(res.body.pagination).not.toBeNull();
   })
 
   it("should return a single product", async()=>{
@@ -85,8 +85,6 @@ describe("GET / products" ,()=>{
     expect(res.body.data.products).not.toBeNull();
   })
 
- /*  it("should filter products by category and price range and sort by price in ascending or descending order ", async()=>{
-  }) */
 
 })
 
