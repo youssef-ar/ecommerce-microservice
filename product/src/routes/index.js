@@ -1,13 +1,13 @@
 const express= require('express');
 const { body } = require('express-validator');
 const productController = require('../controllers/productController');
-
+const isAutherizedMiddleware = require('../middleware/isAutherizedMiddleware');
 const router= express.Router();
 
 
 
 router.route('').get(productController.getProducts);
-router.route('/:id').get(productController.getProduct).patch(productController.patchProduct).delete(productController.deleteProduct);
+router.route('/:id').get(productController.getProduct).patch(isAutherizedMiddleware, productController.patchProduct).delete(isAutherizedMiddleware, productController.deleteProduct);
 
 router.post('', [
     body('name')
@@ -24,7 +24,7 @@ router.post('', [
     
     body('category')
         .notEmpty().withMessage('Category is required')
-        .isString().withMessage('Category must be a string')],productController.postProduct);
+        .isString().withMessage('Category must be a string')],isAutherizedMiddleware,productController.postProduct);
 
 
 

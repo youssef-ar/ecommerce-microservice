@@ -27,7 +27,7 @@ const authService = {
         if(!passwordsMatch){
             return {success:false, message: "Invalid email or password"};
         }
-        const token = jwt.sign({...user},jwtSecret);
+        const token = jwt.sign({email:user.email},jwtSecret);
         return {success:true, data:{token}};
         
     },

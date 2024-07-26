@@ -14,6 +14,7 @@ beforeAll(async()=>{
   .post('/login')
   .send({ email: 'test@example.com', password: 'A1b2@c3D' });
   authToken = authRes.body.data.token;
+  
 });
 
 afterAll(async () => {

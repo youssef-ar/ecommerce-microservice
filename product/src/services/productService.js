@@ -3,6 +3,7 @@ const product = require('../models/product');
 const productService={
 
     async getProducts(query){
+        //filtering
         const {category, minPrice , maxPrice, sort} = query;
         const params = {}
         if(category) params.category = category;
@@ -15,8 +16,27 @@ const productService={
                 sortOptions[field] = order === 'asc' ? 1 : -1;
             }
         }
-        const products = await product.find(params).sort(sortOptions);
-        return({success:true, data:{products}});
+        //pagination
+        const page = Number(query.page) || 1;
+        const limit = Number(query.limit) || 15;
+        const totalProducts = await product.countDocuments();
+        const totalPages =  Math.ceil(totalProducts / limit);
+        if(page>totalPages){
+            return({success:false, message:"Out-of-Range Page Request",pagination:{
+                total_records:totalProducts,
+                total_pages:totalPages
+            }});
+        }
+        const startIndex = (page-1)*limit;
+        const pagination= {
+            total_records:totalProducts,
+            current_page:page,
+            total_pages:totalPages,
+            next_page:page+1<=totalPages?page+1:null,
+            prev_page:page-1>=1?page-1:null
+        };
+        const products = await product.find(params).sort(sortOptions).skip(startIndex).limit(limit);
+        return({success:true, data:{products}, pagination});
     },
     async getProduct(id){
         const products = await product.findById(id);
