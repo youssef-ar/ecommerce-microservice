@@ -66,6 +66,10 @@ const productService={
             return {success:false, message:'Product not found'};
         }
         return {success:true, message:'Product deleted successfully'};
+    },
+    async getCategories(){
+        const categories = await product.distinct('category');
+        return {success:true, data:{categories}};
     }
 }
 

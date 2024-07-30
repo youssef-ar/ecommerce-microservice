@@ -72,6 +72,15 @@ const productController= {
         catch (error) {
             res.status(500).json({success:false,error});
         }
+    },
+    async getCategories(req,res){
+        try{
+            const result = await productService.getCategories();
+            return res.status(200).json(result);
+        }
+        catch (error) {
+            res.status(500).json({success:false,error});
+        }
     }
 }
 

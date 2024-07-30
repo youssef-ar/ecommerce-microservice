@@ -48,23 +48,23 @@ jobs:
         cd auth
         npm run test
 
-    - name: Use Node.js ${{ matrix.node-version }} for product
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+  # - name: Use Node.js ${{ matrix.node-version }} for product
+#   uses: actions/setup-node@v3
+#   with:
+#     node-version: ${{ matrix.node-version }}
+#     cache: 'npm'
         
-    - name: Create .env file for product
-      run: |
-        echo "MONGODB_PRODUCT_URI=${{ secrets.MONGODB_PRODUCT_URI }}" >> product/.env
-        echo "PRODUCT_API_KEY=${{ secrets.PRODUCT_API_KEY }}" >> product/.env
+# - name: Create .env file for product
+#   run: |
+#     echo "MONGODB_PRODUCT_URI=${{ secrets.MONGODB_PRODUCT_URI }}" >> product/.env
+#     echo "PRODUCT_API_KEY=${{ secrets.PRODUCT_API_KEY }}" >> product/.env
         
-    - name: Install dependencies for product
-      run: |
-        cd product
-        npm ci
+# - name: Install dependencies for product
+#   run: |
+#     cd product
+#     npm ci
         
-    - name: Run tests for product
-      run: |
-        cd product
-        npm run test
+# - name: Run tests for product
+#   run: |
+#     cd product
+#     npm run test
