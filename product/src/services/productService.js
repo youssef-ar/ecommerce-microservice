@@ -39,6 +39,7 @@ const productService={
         return({success:true, data:{products}, pagination});
     },
     async getProduct(id){
+        //if changed change cart model
         const products = await product.findById(id);
         return({success:true, data:{products}});
     },

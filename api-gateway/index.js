@@ -20,6 +20,8 @@ app.use("/orders", createProxyMiddleware({ target: 'http://localhost:3001', chan
 // Route requests to the product service
 app.use("/products", createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true }));
 
+app.use("/carts", createProxyMiddleware({ target: 'http://localhost:3003', changeOrigin: true }));
+
 // Start the server
 const port = process.env.PORT || 8001;
 app.listen(port,()=>{
