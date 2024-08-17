@@ -1,4 +1,5 @@
 const cartService = require('../services/cartService');
+const messageBroker = require('../../MessageBroker');
 
 
 const cartController= {
@@ -71,6 +72,17 @@ const cartController= {
             res.status(500).json({success:false,error});
         }
     },
+
+    async checkout(req,res){
+        try { 
+            const cartInstance = await cartService.checkout(req);
+            console.log(cartInstance);
+            await messageBroker.publishMessage("orders", cartInstance);
+            res.status(200).json({success:true, cartInstance});
+        } catch (error) {
+            return res.status(500).json({success:false,error});
+        }
+    }
 
 }
 

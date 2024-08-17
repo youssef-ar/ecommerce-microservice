@@ -1,3 +1,4 @@
+const { checkout } = require('../controllers/cartController');
 const cart = require('../models/cart');
 /* const jwt = require('jsonwebtoken');
 const {jwtSecret} = require('../config/index'); */
@@ -102,6 +103,11 @@ const cartservice = {
         cartInstance.items=[];
         await cartInstance.save();
         return {success: true, cart:cartInstance};
+    },
+    async checkout(req){
+        const cartId = req.params.id;
+        const cartInstance = await cart.findById(cartId);
+        return (cartInstance.toJSON());
     }
     
 

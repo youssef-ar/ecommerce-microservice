@@ -14,7 +14,7 @@ router.route('/items/:id')
       .post(cartController.postItem)
       .delete(cartController.deleteItem)
       .patch(cartController.patchItem);
-
+router.route('/checkout/:id').post(cartController.checkout);
 
 
 
