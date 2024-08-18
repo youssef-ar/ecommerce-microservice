@@ -1,22 +1,26 @@
 const { checkout } = require('../controllers/cartController');
 const cart = require('../models/cart');
-/* const jwt = require('jsonwebtoken');
-const {jwtSecret} = require('../config/index'); */
+const jwt = require('jsonwebtoken');
+const {jwtSecret} = require('../config/index');
 
 
 const cartservice = {
 
     async getCart(req){
-        const  cartId  = req.params.id; 
         let cartInstance;
-        if(cartId){
-            cartInstance = await cart.findById(cartId);
-            if(!cartInstance){
-                return{ success: false, message:'Cart not found'};
-            }
+        const authHeader = req.headers.authorization;
+        if (authHeader) {
+            const token = authHeader.split(" ")[1];
+            const user = jwt.verify(token, jwtSecret);
+            const userId = user.userId;
+            cartInstance = await cart.findOne({userId});
         }else{
-            cartInstance = await cart.find({});
+            cartInstance = await cart.findOne({sessionId:req.sessionID});
         }
+        if(!cartInstance){
+            return{ success: false, message:'Cart not found'};
+        }
+        
         
         return {success:true, cart:cartInstance};
     },
@@ -28,7 +32,7 @@ const cartservice = {
             const token = authHeader.split(" ")[1];
             user = jwt.verify(token, jwtSecret);
         }
-        const cartData = {};
+        const cartData = {sessionId:req.sessionID};
         if (user) {
             cartData.userId= mongoose.Types.ObjectId(user._id);
         }

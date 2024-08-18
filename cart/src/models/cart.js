@@ -15,6 +15,10 @@ const CartItemSchema = new Schema({
 });
 
 const CartSchema = new Schema({
+  sessionId:{
+    type: String,
+    required:true
+  },
   userId:{
     type: String,
     required: false

@@ -15,6 +15,8 @@ class MessageBroker {
         await this.channel.assertQueue("orders",{
             durable:true
         });
+        await this.channel.assertQueue("payments", { durable: true });
+        
         console.log("RabbitMQ connected");
       } catch (err) {
         console.error("Failed to connect to RabbitMQ:", err.message);
