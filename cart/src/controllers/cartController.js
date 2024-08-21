@@ -76,7 +76,6 @@ const cartController= {
     async checkout(req,res){
         try { 
             const cartInstance = await cartService.checkout(req);
-            console.log(cartInstance);
             await messageBroker.publishMessage("orders", cartInstance);
             res.status(200).json({success:true, cartInstance});
         } catch (error) {

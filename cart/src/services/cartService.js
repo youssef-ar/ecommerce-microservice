@@ -42,14 +42,16 @@ const cartservice = {
     },
     async postItem(req) {
         const { productId, quantity } = req.body;
-        const  cartId  = req.params.id;
+        let cartInstance;
         const authHeader = req.headers.authorization;
-        let user;
         if (authHeader) {
             const token = authHeader.split(" ")[1];
-            user = jwt.verify(token, jwtSecret);
+            const user = jwt.verify(token, jwtSecret);
+            const userId = user.userId;
+            cartInstance = await cart.findOne({userId});
+        }else{
+            cartInstance = await cart.findOne({sessionId:req.sessionID});
         }
-        const cartInstance = await cart.findById(cartId);
         if(!cartInstance){
             return{ success: false, message:'Cart not found'};
         }
@@ -74,9 +76,16 @@ const cartservice = {
 
     async deleteItem(req){
         const {productId} = req.body;
-        const cartId = req.params.id;
-
-        const cartInstance = await cart.findById(cartId);
+        let cartInstance;
+        const authHeader = req.headers.authorization;
+        if (authHeader) {
+            const token = authHeader.split(" ")[1];
+            const user = jwt.verify(token, jwtSecret);
+            const userId = user.userId;
+            cartInstance = await cart.findOne({userId});
+        }else{
+            cartInstance = await cart.findOne({sessionId:req.sessionID});
+        }
         if(!cartInstance){
             return{ success: false, message:'Cart not found'};
         }
@@ -88,9 +97,16 @@ const cartservice = {
 
     async patchItem(req){
         const {productId, quantity} = req.body;
-        const cartId = req.params.id;
-
-        const cartInstance = await cart.findById(cartId);
+        let cartInstance;
+        const authHeader = req.headers.authorization;
+        if (authHeader) {
+            const token = authHeader.split(" ")[1];
+            const user = jwt.verify(token, jwtSecret);
+            const userId = user.userId;
+            cartInstance = await cart.findOne({userId});
+        }else{
+            cartInstance = await cart.findOne({sessionId:req.sessionID});
+        }
         if(!cartInstance){
             return{ success: false, message:'Cart not found'};
         }
@@ -102,15 +118,37 @@ const cartservice = {
     },
 
     async clearCart(req){
-        const cartId = req.params.id;
-        const cartInstance = await cart.findById(cartId);
+        let cartInstance;
+        const authHeader = req.headers.authorization;
+        if (authHeader) {
+            const token = authHeader.split(" ")[1];
+            const user = jwt.verify(token, jwtSecret);
+            const userId = user.userId;
+            cartInstance = await cart.findOne({userId});
+        }else{
+            cartInstance = await cart.findOne({sessionId:req.sessionID});
+        }
+        if(!cartInstance){
+            return{ success: false, message:'Cart not found'};
+        }
         cartInstance.items=[];
         await cartInstance.save();
         return {success: true, cart:cartInstance};
     },
     async checkout(req){
-        const cartId = req.params.id;
-        const cartInstance = await cart.findById(cartId);
+        let cartInstance;
+        const authHeader = req.headers.authorization;
+        if (authHeader) {
+            const token = authHeader.split(" ")[1];
+            const user = jwt.verify(token, jwtSecret);
+            const userId = user.userId;
+            cartInstance = await cart.findOne({userId});
+        }else{
+            cartInstance = await cart.findOne({sessionId:req.sessionID});
+        }
+        if(!cartInstance){
+            return{ success: false, message:'Cart not found'};
+        }
         return (cartInstance.toJSON());
     }
     

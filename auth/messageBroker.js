@@ -17,7 +17,6 @@ class MessageBroker {
         try {
           const connection = await amqp.connect("amqp://localhost:5672");
           this.channel = await connection.createChannel();
-          await this.channel.assertQueue("orders", { durable: true });
           await this.channel.assertQueue("carts", { durable: true });
           console.log("RabbitMQ connected");
           resolve(this.channel);

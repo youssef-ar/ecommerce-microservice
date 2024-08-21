@@ -4,17 +4,17 @@ const router= express.Router();
 
 
 
-router.route('/:id')
+router.route('')
       .get(cartController.getCart)
-      .delete(cartController.clearCart);
+      .delete(cartController.clearCart)
+      .post(cartController.postCart);
 
-router.post('',cartController.postCart);
 
-router.route('/items/:id')
+router.route('/items')
       .post(cartController.postItem)
       .delete(cartController.deleteItem)
       .patch(cartController.patchItem);
-router.route('/checkout/:id').post(cartController.checkout);
+router.route('/checkout').post(cartController.checkout);
 
 
 

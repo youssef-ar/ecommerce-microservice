@@ -18,10 +18,10 @@ const start = async () => {
 }
 
 const  setupOrderConsumer = async ()=> {
+  
+    await messageBroker.connect();
 
-  await messageBroker.connect();
-
-  messageBroker.consumeMessage("orders", async ({ userId, items, totalPrice }) => {
+  await messageBroker.consumeMessage("orders", async ({ userId, items, totalPrice }) => {
     console.log("Consuming ORDER service");
 
     const newOrder = new order({
@@ -36,14 +36,17 @@ const  setupOrderConsumer = async ()=> {
       console.log("Order saved to DB and ACK sent to ORDER queue");
 
       // Send price to payment queue
-      await messageBroker.publishMessage("payments", { userId, totalPrice });
+      await messageBroker.publishMessage("payments", {  userId, totalPrice, orderId:newOrder._id });
       console.log("Total price sent to PAYMENT queue");
     } catch (err) {
       console.error("Failed to process order:", err.message);
     }
-  });
+  })
+
+  
+  };
     
-  setTimeout(async () => {
+  /* setTimeout(async () => {
     try {
       const amqpServer = "amqp://localhost:5672";
       const connection = await amqp.connect(amqpServer);
@@ -78,8 +81,8 @@ const  setupOrderConsumer = async ()=> {
     } catch (err) {
       console.error("Failed to connect to RabbitMQ:", err.message);
     }
-  }, 10000); // add a delay to wait for RabbitMQ to start in docker-compose
-  }
+  }, 10000);  */// add a delay to wait for RabbitMQ to start in docker-compose
+
 
 start();
 setupOrderConsumer();

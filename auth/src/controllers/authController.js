@@ -1,6 +1,7 @@
 
 const authService = require('../services/authService');
 const { validationResult } = require('express-validator');
+const messageBroker = require('../../messageBroker');
 
 const authController ={
     async signUp (req,res){
@@ -31,6 +32,7 @@ const authController ={
             if(result.success===false){
                 return res.status(401).json(result);
             }
+            await messageBroker.publishMessage("carts", {sessionID:req.sessionID, token:result.data} );
             return res.status(200).json(result);
             
         }
